@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Functions Assignment</title>
+    <!-- Add Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <style>
+        /* Custom Popup Styles */
+        .custom-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .custom-popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-popup-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+        /* Custom CSS class for navbar links alignment */
+        .navbar-left {
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bootstrap Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">JavaScript Assignment # ( 51 )</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav navbar-left">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showForm('evenNumForm')">Find Even Num</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showForm('longestStringForm')">Find Longest String</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showForm('rectangleAreaForm')">Find Area of Rectangle</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showForm('temperatureForm')">Convert Temperature</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Custom Popup -->
+    <div id="customPopup" class="custom-popup">
+        <div class="custom-popup-content">
+            <span class="custom-popup-close" onclick="hideCustomPopup()">&times;</span>
+            <h3 id="popupTitle"></h3>
+            <p id="popupMessage"></p>
+        </div>
+    </div>
+
+    <!-- Even Number Form -->
+    <div id="evenNumForm" class="container mt-4" style="display: none;">
+        <h3>Find Even Number</h3>
+        <form>
+            <div class="mb-3">
+                <label for="evenNumInput" class="form-label">Enter a Number:</label>
+                <input type="number" class="form-control" id="evenNumInput">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="checkEvenNum()">Check</button>
+        </form>
+    </div>
+
+    <!-- Longest String Form -->
+    <div id="longestStringForm" class="container mt-4" style="display: none;">
+        <h3>Find Longest String</h3>
+        <form>
+            <div class="mb-3">
+                <label for="longestStringInput" class="form-label">Enter a String:</label>
+                <input type="text" class="form-control" id="longestStringInput">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="findLongestWord()">Check</button>
+        </form>
+    </div>
+
+    <!-- Rectangle Area Form -->
+    <div id="rectangleAreaForm" class="container mt-4" style="display: none;">
+        <h3>Find Area of Rectangle</h3>
+        <form>
+            <div class="mb-3">
+                <label for="lengthInput" class="form-label">Enter Length:</label>
+                <input type="number" class="form-control" id="lengthInput">
+            </div>
+            <div class="mb-3">
+                <label for="widthInput" class="form-label">Enter Width:</label>
+                <input type="number" class="form-control" id="widthInput">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="calculateRectangleArea()">Check</button>
+        </form>
+    </div>
+
+    <!-- Temperature Conversion Form -->
+    <div id="temperatureForm" class="container mt-4" style="display: none;">
+        <h3>Convert Temperature</h3>
+        <form>
+            <div class="mb-3">
+                <label for="temperatureInput" class="form-label">Enter Temperature:</label>
+                <input type="number" class="form-control" id="temperatureInput">
+            </div>
+            <div class="mb-3">
+                <label for="unitSelect" class="form-label">Select Unit:</label>
+                <select class="form-select" id="unitSelect">
+                    <option value="C">Celsius</option>
+                    <option value="F">Fahrenheit</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="convertTemperature()">Check</button>
+        </form>
+    </div>
+
+    <!-- Add Bootstrap 5 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to show the specified form and hide others
+        function showForm(formId) {
+            hideAllForms();
+            document.getElementById(formId).style.display = "block";
+        }
+
+        // Function to hide all forms
+        function hideAllForms() {
+            const forms = document.querySelectorAll(".container");
+            forms.forEach(form => form.style.display = "none");
+        }
+
+        // Function to show custom popup
+        function showCustomPopup(title, message) {
+            document.getElementById("popupTitle").textContent = title;
+            document.getElementById("popupMessage").textContent = message;
+            document.getElementById("customPopup").style.display = "block";
+        }
+
+        // Function to hide custom popup
+        function hideCustomPopup() {
+            document.getElementById("customPopup").style.display = "none";
+        }
+
+        // Function to check if the number is even
+        function isEvenNumber(number) {
+            return number % 2 === 0;
+        }
+
+        // Function to check if the number is even
+        function checkEvenNum() {
+            const num = parseFloat(document.getElementById("evenNumInput").value);
+            if (!isNaN(num)) {
+                const result = isEvenNumber(num) ? "even" : "odd";
+                showCustomPopup("Even Number", `The number is ${result}.`);
+            } else {
+                alert("Invalid input. Please enter a valid number.");
+            }
+        }
+
+        // Function to find the longest word in a string
+        function findLongestWord() {
+            const str = document.getElementById("longestStringInput").value;
+            const words = str.split(" ");
+            let longestWord = "";
+            for (const word of words) {
+                if (word.length > longestWord.length) {
+                    longestWord = word;
+                }
+            }
+            showCustomPopup("Longest Word", `The longest word is: ${longestWord}`);
+        }
+
+        // Function to calculate the area of a rectangle
+        function calculateRectangleArea() {
+            const length = parseFloat(document.getElementById("lengthInput").value);
+            const width = parseFloat(document.getElementById("widthInput").value);
+            if (!isNaN(length) && !isNaN(width)) {
+                const area = length * width;
+                showCustomPopup("Area of Rectangle", `The area of the rectangle is: ${area}`);
+            } else {
+                alert("Invalid input. Please enter valid numbers for length and width.");
+            }
+        }
+
+        // Function to convert temperature
+        function convertTemperature() {
+            const temperature = parseFloat(document.getElementById("temperatureInput").value);
+            const unit = document.getElementById("unitSelect").value;
+            if (!isNaN(temperature) && (unit === "C" || unit === "F")) {
+                let convertedTemperature;
+                if (unit === "C") {
+                    convertedTemperature = (temperature * 9/5) + 32;
+                } else {
+                    convertedTemperature = (temperature - 32) * 5/9;
+                }
+                showCustomPopup("Converted Temperature", `The converted temperature is: ${convertedTemperature.toFixed(2)}°${unit === "C" ? "F" : "C"}`);
+            } else {
+                alert("Invalid input. Please enter a valid temperature and select a valid unit (Celsius or Fahrenheit).");
+            }
+        }
+    </script>
+</body>
+</html>

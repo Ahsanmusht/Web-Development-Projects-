@@ -1,0 +1,120 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #007bff;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.nav-link {
+    font-size: 16px;
+}
+
+/* Form styles */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+input {
+    margin: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Profile image styles */
+.profile-image-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.profile-image-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-image-upload {
+    display: none;
+}
+
+.profile-image-label {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Product table styles */
+.product-table {
+    margin-top: 30px;
+}
+
+.product-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-table table th,
+.product-table table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.product-table table th {
+    background-color: #f2f2f2;
+}
+
+.product-table table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Product form styles */
+.product-form {
+    margin-bottom: 20px;
+}
+
+/* Custom message modal styles */
+.modal-dialog {
+    max-width: 400px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+/* Add custom styles here to further enhance the design */

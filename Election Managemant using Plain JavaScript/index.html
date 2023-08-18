@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo List</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .task-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .task-item .task-image {
+      max-width: 50%;
+      height: auto;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Todo List</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showAddTaskSection()">Add Task</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showTaskListSection()">Task List</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4" id="addTaskSection">
+    <h2>Add Task</h2>
+    <form id="taskForm">
+      <div class="mb-3">
+        <label for="taskName" class="form-label">Task Name:</label>
+        <input type="text" class="form-control" id="taskName" required>
+      </div>
+      <div class="mb-3">
+        <label for="taskImage" class="form-label">Task Image:</label>
+        <input type="file" class="form-control" id="taskImage" accept="image/*">
+        <div class="mt-2" id="imagePreviewContainer"></div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+  </div>
+
+  <div class="container mt-4" id="taskListSection" style="display: none;">
+    <h2>Task List</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Task Name</th>
+          <th scope="col">Task Image</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="taskList"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Retrieve tasks from local storage
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    // Display tasks on page load
+    displayTasks();
+
+    // Add task to the list
+    document.getElementById('taskForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const taskName = document.getElementById('taskName').value;
+      const taskImage = document.getElementById('taskImage').files[0];
+      if (taskName.trim() === '' || !taskImage) {
+        alert('Please enter task name and select an image.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const task = { name: taskName, image: e.target.result };
+        tasks.push(task);
+        saveTasks();
+        displayTasks();
+        document.getElementById('taskForm').reset();
+        showTaskListSection();
+      };
+      reader.readAsDataURL(taskImage);
+    });
+
+    // Delete task from the list
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      saveTasks();
+      displayTasks();
+    }
+
+    // Save tasks to local storage
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // Display tasks on the page
+    function displayTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        const taskItem = document.createElement('tr');
+        taskItem.classList.add('task-item');
+
+        const taskNameElement = document.createElement('td');
+        taskNameElement.innerText = task.name;
+        taskItem.appendChild(taskNameElement);
+
+        const taskImageElement = document.createElement('td');
+        if (task.image) {
+          const image = document.createElement('img');
+          image.src = task.image;
+          image.classList.add('task-image');
+          taskImageElement.appendChild(image);
+        }
+        taskItem.appendChild(taskImageElement);
+
+        const actionsElement = document.createElement('td');
+
+        const editButton = document.createElement('button');
+        editButton.className = 'btn btn-primary btn-sm me-2';
+        editButton.innerHTML = '<i class="fas fa-edit"></i>';
+        editButton.addEventListener('click', function() {
+          editTask(i);
+        });
+        actionsElement.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-danger btn-sm';
+        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        deleteButton.addEventListener('click', function() {
+          deleteTask(i);
+        });
+        actionsElement.appendChild(deleteButton);
+
+        taskItem.appendChild(actionsElement);
+
+        taskList.appendChild(taskItem);
+      }
+    }
+
+    // Edit task
+    function editTask(index) {
+      const newTaskName = prompt('Enter new task name:');
+      if (newTaskName) {
+        tasks[index].name = newTaskName;
+        saveTasks();
+        displayTasks();
+      }
+    }
+
+    // Show "Add Task" section and hide "Task List" section
+    function showAddTaskSection() {
+      document.getElementById('addTaskSection').style.display = 'block';
+      document.getElementById('taskListSection').style.display = 'none';
+    }
+
+    // Show "Task List" section and hide "Add Task" section
+    function showTaskListSection() {
+      document.getElementById('addTaskSection').style.display = 'none';
+      document.getElementById('taskListSection').style.display = 'block';
+    }
+
+    // Handle image preview
+    document.getElementById('taskImage').addEventListener('change', function(event) {
+      const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+      imagePreviewContainer.innerHTML = '';
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imagePreview = document.createElement('img');
+        imagePreview.src = e.target.result;
+        imagePreview.classList.add('task-image');
+        imagePreviewContainer.appendChild(imagePreview);
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>

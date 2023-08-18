@@ -1,0 +1,19 @@
+/* .div1{
+    width: 40%;
+    height: 40vh;
+    background-color: blueviolet;
+}
+
+p{
+    min-width: 75%;
+    max-height: 75vh;
+    background-color: gray;
+} */
+
+.main {
+  border: 5px solid;
+  margin: auto;
+  width: 95%;
+  height: 1000px;
+  background-color: rgba(117, 115, 115, 0.421);
+}
